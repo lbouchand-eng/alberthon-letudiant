@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Baromètre des Intentions d'Orientation — L'Étudiant{% endblock %}
+
+{% block content %}
+
+<section class="hero" style="padding: 60px 24px 80px;">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-eyebrow">📊 Produit n°1 — SaaS</span>
+      <h1>Baromètre des Intentions d'Orientation</h1>
+      <p class="lead">Le pouls de l'orientation française en temps réel. 4 millions d'inscrits, 6 insights, mis à jour chaque mois.</p>
+      <div class="hero-ctas">
+        <a href="{{ url_for('pricing') }}" class="btn btn-primary btn-lg">Voir les tarifs</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-ghost btn-lg">Demander une démo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <small>Les 6 insights</small>
+      <h2>Tout ce qu'il faut savoir sur l'orientation post-bac</h2>
+      <p>Six widgets interactifs combinés sur un seul dashboard, exportables en PDF pour vos comités stratégiques.</p>
+    </div>
+
+    <div class="card-grid two" style="grid-template-columns: 1fr 1fr;">
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.6rem; margin-bottom: 10px;">📚</div>
+        <h3>Top filières par intention</h3>
+        <p class="card-sub">Volume d'inscrits par domaine d'étude déclaré sur la base 4M.</p>
+        <p style="font-size: 0.9rem; color: var(--text-soft);">Voyez instantanément quels domaines gagnent ou perdent des intentions au fil des mois. Idéal pour anticiper les retournements de marché.</p>
+      </div>
+
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.6rem; margin-bottom: 10px;">💬</div>
+        <h3>Activité agent IA</h3>
+        <p class="card-sub">Nombre de conversations d'orientation par mois.</p>
+        <p style="font-size: 0.9rem; color: var(--text-soft);">Suivez les pics de questionnement (Parcoursup, rentrée…) pour caler vos campagnes au bon moment.</p>
+      </div>
+
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.6rem; margin-bottom: 10px;">📧</div>
+        <h3>Engagement email</h3>
+        <p class="card-sub">Taux d'ouverture et de clic par niveau scolaire.</p>
+        <p style="font-size: 0.9rem; color: var(--text-soft);">Les Terminales tech ouvrent 49 % de leurs emails — 2× la moyenne marché. Calibrez vos campagnes sur les niveaux les plus engagés.</p>
+      </div>
+
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.6rem; margin-bottom: 10px;">🏙️</div>
+        <h3>Salons par ville</h3>
+        <p class="card-sub">Inscrits vs venus, taux de présence.</p>
+        <p style="font-size: 0.9rem; color: var(--text-soft);">3,5 M de présences. Identifiez les salons où votre cible se présente vraiment et où votre stand a le plus de ROI.</p>
+      </div>
+
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.6rem; margin-bottom: 10px;">💰</div>
+        <h3>Profil CSP par filière</h3>
+        <p class="card-sub">Méthode INSEE probabiliste agrégée.</p>
+        <p style="font-size: 0.9rem; color: var(--text-soft);">Voyez quelles filières attirent les profils CSP+ ou CSP−. Ajustez vos grilles tarifaires et politiques de bourses.</p>
+      </div>
+
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.6rem; margin-bottom: 10px;">🎯</div>
+        <h3>Distribution leads A/B/C</h3>
+        <p class="card-sub">Sortie directe du pipeline scoring.</p>
+        <p style="font-size: 0.9rem; color: var(--text-soft);">Combien de leads chauds sont disponibles ce mois-ci sur votre filière ? Visibilité directe sur le potentiel CPL.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-grey">
+  <div class="container">
+    <div class="section-title">
+      <small>Comment ça marche</small>
+      <h2>De la donnée brute à l'insight actionnable</h2>
+    </div>
+
+    <div class="card-grid three" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <div class="card" style="padding: 28px; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 12px;">1</div>
+        <h3>Connexion à BigQuery</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Pipeline temps réel sur la base CRM L'Étudiant — 4 M d'inscrits, 250 M d'événements emails, 3,5 M de présences salons.</p>
+      </div>
+      <div class="card" style="padding: 28px; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 12px;">2</div>
+        <h3>Agrégation & enrichissement</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Croisement avec les probabilités CSP INSEE par bassin. Filtrage RGPD automatique. Anonymisation systématique.</p>
+      </div>
+      <div class="card" style="padding: 28px; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 12px;">3</div>
+        <h3>Visualisation interactive</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Dashboard accessible 24/7 dans votre portail. Filtres par niveau, CSP, ville. Export PDF pour vos comités.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="text-align: center; max-width: 720px;">
+    <h2 style="font-size: 2rem; font-weight: 800;">Voir le Baromètre en action</h2>
+    <p style="color: var(--muted); margin: 12px 0 28px;">Démo en direct sur des données live · 30 minutes avec un expert produit.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Demander une démo</a>
+    <a href="{{ url_for('pricing') }}" class="btn btn-ghost btn-lg" style="margin-left: 8px;">Voir les tarifs</a>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Contact &amp; demande de démo — L'Étudiant{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top: 56px;">
+  <div class="container" style="max-width: 880px;">
+    <div class="section-title">
+      <small>Parlons de votre projet</small>
+      <h2>Demander une démo</h2>
+      <p>30 minutes avec un expert produit, données live, accès à un compte de test sur le portail. Sans engagement.</p>
+    </div>
+
+    <div class="card-grid two" style="grid-template-columns: 1.3fr 1fr; gap: 32px;">
+      <form method="post" class="form-card" style="max-width: none;">
+        <div class="form-row">
+          <label for="name">Nom &amp; prénom *</label>
+          <input id="name" name="name" type="text" required>
+        </div>
+        <div class="form-row">
+          <label for="email">Email professionnel *</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div class="form-row">
+          <label for="school">Établissement</label>
+          <input id="school" name="school" type="text" placeholder="Nom de votre école">
+        </div>
+        <div class="form-row">
+          <label for="message">Votre besoin *</label>
+          <textarea id="message" name="message" required placeholder="Quels sont vos objectifs d'inscription ? Sur quelles filières ? Avez-vous déjà un budget acquisition ?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer ma demande</button>
+        <p style="font-size: 0.78rem; color: var(--muted); margin-top: 12px; text-align: center;">
+          Vos données sont traitées conformément à notre politique RGPD. Réponse sous 48 h ouvrées.
+        </p>
+      </form>
+
+      <div>
+        <div class="card" style="padding: 28px; margin-bottom: 16px;">
+          <h3 style="font-size: 1rem; font-weight: 800;">📧 Email direct</h3>
+          <p style="color: var(--text-soft); font-size: 0.92rem; margin-top: 6px;">data-team@letudiant.fr</p>
+        </div>
+        <div class="card" style="padding: 28px; margin-bottom: 16px;">
+          <h3 style="font-size: 1rem; font-weight: 800;">📞 Téléphone</h3>
+          <p style="color: var(--text-soft); font-size: 0.92rem; margin-top: 6px;">+33 1 71 36 60 00<br><span style="font-size:0.82rem; color:var(--muted);">Lun-Ven · 9h-18h</span></p>
+        </div>
+        <div class="card" style="padding: 28px;">
+          <h3 style="font-size: 1rem; font-weight: 800;">🏢 Adresse</h3>
+          <p style="color: var(--text-soft); font-size: 0.92rem; margin-top: 6px;">L'Étudiant<br>26 Rue Jacques Daguerre<br>92500 Rueil-Malmaison</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

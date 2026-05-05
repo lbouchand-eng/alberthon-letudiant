@@ -1,0 +1,139 @@
+{% extends "portal/_layout.html" %}
+{% block title %}Baromètre — Mon portail{% endblock %}
+
+{% block portal_head %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    .salon-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .salon-table th { background: var(--bg); padding: 10px 12px; text-align: left; font-weight: 600; font-size: 0.74rem; color: var(--muted); text-transform: uppercase; border-bottom: 2px solid var(--border); letter-spacing: 0.4px; }
+    .salon-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
+    .salon-table tr:last-child td { border-bottom: none; }
+    .bar-cell { display: flex; align-items: center; gap: 8px; }
+    .bar-fill { height: 8px; border-radius: 4px; background: var(--primary); transition: width 0.3s; }
+    .bar-bg   { flex: 1; background: #f3f4f6; border-radius: 4px; height: 8px; }
+  </style>
+{% endblock %}
+
+{% block portal_content %}
+
+<div class="page-head">
+  <div>
+    <h1>📊 Baromètre des Intentions d'Orientation</h1>
+    <div class="sub">Mis à jour le {{ bdata.generated_at.replace('T', ' à ')[:16] }} · Source : BigQuery letudiant-data-prod.Hacka_g23</div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-field">
+    <label>Niveau scolaire</label>
+    <select id="filterNiveau">
+      <option value="all">Tous</option>
+      <option value="Terminale">Terminale</option>
+      <option value="Première">Première</option>
+      <option value="Bac+1">Bac+1</option>
+      <option value="Bac+2">Bac+2</option>
+      <option value="Bac+3">Bac+3</option>
+      <option value="3ème">3ème</option>
+    </select>
+  </div>
+  <div class="filter-field">
+    <label>Profil CSP</label>
+    <select id="filterCSP">
+      <option value="all">Tous</option>
+      <option value="CSP+">CSP+</option>
+      <option value="CSP-">CSP−</option>
+    </select>
+  </div>
+  <div class="filter-field">
+    <label>Ville salon</label>
+    <select id="filterVille">
+      <option value="all">Toutes</option>
+      <option value="PARIS">Paris</option>
+      <option value="LYON">Lyon</option>
+      <option value="LILLE">Lille</option>
+      <option value="BORDEAUX">Bordeaux</option>
+      <option value="RENNES">Rennes</option>
+      <option value="NANTES">Nantes</option>
+    </select>
+  </div>
+</div>
+
+<div id="charts-root">
+  <div class="kpi-grid" style="margin-bottom: 18px;">
+    <div class="kpi-card">
+      <div class="value">{{ '%.1f'|format(bdata.kpis.total_inscrits / 1e6) }}M</div>
+      <div class="label">Inscrits actifs</div>
+      <div class="sub">base CRM L'Étudiant</div>
+    </div>
+    <div class="kpi-card">
+      <div class="value">{{ "{:,.0f}".format(bdata.kpis.total_conversations_agent).replace(',', ' ') }}</div>
+      <div class="label">Conversations orientation</div>
+      <div class="sub">agent conversationnel IA</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="value">{{ bdata.kpis.tx_ouverture_terminale }}%</div>
+      <div class="label">Taux d'ouverture email</div>
+      <div class="sub">Terminales · 2× la moyenne marché</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="value">{{ bdata.kpis.tx_presence_salons }}%</div>
+      <div class="label">Taux de présence salons</div>
+      <div class="sub">inscrits effectivement venus</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">📚 Insight 1 — Top filières par volume d'intention</div>
+      <div class="chart-subtitle">Nb d'inscrits par domaine d'étude déclaré · base 4M inscrits</div>
+      <div class="chart-wrap"><canvas id="chartDomaines"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">💬 Insight 2 — Activité agent conversationnel</div>
+      <div class="chart-subtitle">Nb de conversations orientation par mois · saison 2025/2026</div>
+      <div class="chart-wrap"><canvas id="chartConv"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">📧 Insight 3 — Engagement email par niveau scolaire</div>
+      <div class="chart-subtitle">Taux d'ouverture moyen · les Terminales surperforment nettement</div>
+      <div class="chart-wrap"><canvas id="chartCRM"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🏙️ Insight 4 — Présence aux salons par ville</div>
+      <div class="chart-subtitle">Inscrits vs venus · saison 25/26</div>
+      <div class="chart-wrap"><canvas id="chartSalons"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card full">
+      <div class="chart-title">💰 Insight 5 — Profil CSP par filière d'intention</div>
+      <div class="chart-subtitle">Données INSEE probabilistes agrégées · cible des bassins compatibles avec votre grille tarifaire</div>
+      <div class="chart-wrap tall"><canvas id="chartCSP"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card full">
+      <div class="chart-title">🎯 Insight 6 — Distribution des leads scorés (sortie pipeline)</div>
+      <div class="chart-subtitle">Répartition A/B/C sur l'échantillon scoré · base à laquelle s'appliquent les prix CPL</div>
+      <div class="chart-wrap"><canvas id="chartLeadDist"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom: 24px;">
+    <div class="chart-title">📋 Détail salons — Saison 25/26</div>
+    <div class="chart-subtitle" style="margin-bottom: 16px;">Taux de présence par salon · signal de maturité décisionnelle</div>
+    <table class="salon-table">
+      <thead><tr><th>Ville</th><th>Inscrits</th><th>Venus</th><th>Taux présence</th><th></th></tr></thead>
+      <tbody id="salonTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+
+{% endblock %}

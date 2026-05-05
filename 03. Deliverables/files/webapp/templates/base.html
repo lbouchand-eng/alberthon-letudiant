@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}L'Étudiant — Intelligence d'orientation{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="{{ url_for('home') }}" class="brand">
+      <span class="brand-logo">L</span>
+      <span>L'Étudiant <small>Intelligence d'orientation</small></span>
+    </a>
+
+    {% if current_user.is_authenticated %}
+      <div class="nav">
+        <a href="{{ url_for('portal_home') }}">Mon portail</a>
+        <a href="{{ url_for('articles') }}">Articles</a>
+        <a href="{{ url_for('pricing') }}">Tarifs</a>
+      </div>
+      <div class="nav-cta">
+        <span class="badge badge-active" title="{{ current_user.email }}">{{ current_user.school_name or current_user.email }}</span>
+        <form action="{{ url_for('logout') }}" method="post" style="margin:0">
+          <button class="btn btn-ghost btn-sm" type="submit">Déconnexion</button>
+        </form>
+      </div>
+    {% else %}
+      <div class="nav">
+        <a href="{{ url_for('product_barometre') }}" class="{% if request.path == '/produits/barometre' %}active{% endif %}">Baromètre</a>
+        <a href="{{ url_for('product_leads') }}" class="{% if request.path == '/produits/leads' %}active{% endif %}">Leads</a>
+        <a href="{{ url_for('pricing') }}" class="{% if request.path == '/tarifs' %}active{% endif %}">Tarifs</a>
+        <a href="{{ url_for('articles') }}" class="{% if '/articles' in request.path %}active{% endif %}">Articles</a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/a-propos' %}active{% endif %}">À propos</a>
+        <a href="{{ url_for('contact') }}" class="{% if request.path == '/contact' %}active{% endif %}">Contact</a>
+      </div>
+      <div class="nav-cta">
+        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Connexion</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-sm">Demander une démo</a>
+      </div>
+    {% endif %}
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-stack">
+      {% for category, msg in messages %}
+        <div class="flash {{ category }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+{% if not hide_footer %}
+<footer class="site">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">L'Étudiant × Alberthon</div>
+      <p>Plateforme d'intelligence d'orientation. Données issues de 4 millions d'inscrits L'Étudiant — pipeline scoring intent-based RGPD-compliant.</p>
+    </div>
+    <div>
+      <h4>Produits</h4>
+      <ul>
+        <li><a href="{{ url_for('product_barometre') }}">Baromètre</a></li>
+        <li><a href="{{ url_for('product_leads') }}">Leads scorés</a></li>
+        <li><a href="{{ url_for('pricing') }}">Tarifs</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <ul>
+        <li><a href="{{ url_for('articles') }}">Articles</a></li>
+        <li><a href="{{ url_for('about') }}">À propos</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Conformité</h4>
+      <ul>
+        <li>RGPD · CNIL</li>
+        <li>Mentions légales</li>
+        <li>CGU</li>
+      </ul>
+    </div>
+  </div>
+  <div class="copy">
+    <span>© {{ current_year }} L'Étudiant — tous droits réservés.</span>
+    <span>Hackathon Alberthon 2026</span>
+  </div>
+</footer>
+{% endif %}
+
+</body>
+</html>

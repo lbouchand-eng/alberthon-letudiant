@@ -1,0 +1,91 @@
+{% extends "portal/_layout.html" %}
+{% block title %}Consommation — Mon portail{% endblock %}
+
+{% block portal_content %}
+
+<div class="page-head">
+  <div>
+    <h1>💳 Consommation &amp; facturation</h1>
+    <div class="sub">Suivi du quota CPL et historique des téléchargements.</div>
+  </div>
+</div>
+
+<div class="card-grid two">
+  <div class="card">
+    <h3>Plan actuel</h3>
+    <p class="card-sub">{{ plan.label }} — {{ plan.price }}</p>
+    <ul style="list-style: none; margin-top: 10px;">
+      <li style="padding: 6px 0;">{% if plan.barometre %}✅{% else %}—{% endif %} Accès Baromètre</li>
+      <li style="padding: 6px 0;">{% if plan.leads %}✅{% else %}—{% endif %} Achat de leads CPL</li>
+      <li style="padding: 6px 0;">{% if plan.leads %}✅{% else %}—{% endif %} Export CSV</li>
+    </ul>
+    <a href="{{ url_for('pricing') }}" class="btn btn-outline btn-sm" style="margin-top: 10px;">Comparer les plans</a>
+  </div>
+
+  <div class="card">
+    <h3>Quota leads CPL</h3>
+    {% if quota %}
+      <p class="card-sub">{{ consumed }} consommés sur {{ quota }} alloués cette année</p>
+      <div class="quota-bar" style="margin-top: 14px;">
+        <div class="quota-fill {% if quota_pct > 75 %}warning{% endif %}" style="width: {{ quota_pct }}%;"></div>
+      </div>
+      <div class="quota-meta" style="margin-top: 8px;">
+        <span>{{ quota_pct }} % utilisé</span>
+        <span><strong>{{ quota - consumed }}</strong> leads restants</span>
+      </div>
+    {% else %}
+      <p class="card-sub">Aucun quota — votre plan ne comprend pas de leads CPL.</p>
+      <a href="{{ url_for('pricing') }}" class="btn btn-outline btn-sm" style="margin-top: 10px;">Activer les leads</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card" style="margin-top: 16px;">
+  <h3>Répartition par classe</h3>
+  <p class="card-sub">Nombre de leads consommés depuis l'ouverture du compte</p>
+  {% if summary %}
+    <table class="simple-table">
+      <thead><tr><th>Classe</th><th>Leads consommés</th><th>Tarif unitaire</th><th>Coût simulé</th></tr></thead>
+      <tbody>
+        {% set prices = {'A': 32, 'B': 11, 'C': 3} %}
+        {% for cls, n in summary.items() %}
+        <tr>
+          <td><span class="badge badge-{{ cls|lower }}">{{ cls }}</span></td>
+          <td>{{ n }}</td>
+          <td>{{ prices.get(cls, '—') }} €</td>
+          <td><strong>{{ n * prices.get(cls, 0) }} €</strong></td>
+        </tr>
+        {% endfor %}
+        <tr style="background: var(--bg);">
+          <td colspan="3"><strong>Total</strong></td>
+          <td><strong>{{ summary.items()|sum(attribute=1) }} leads · {% set total_eur = 0 %}{% for c, n in summary.items() %}{% set total_eur = total_eur + n * prices.get(c, 0) %}{% endfor %}{{ total_eur }} €</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: var(--muted); font-size: 0.9rem; margin-top: 10px;">Aucune consommation pour le moment. Allez sur la page Leads pour exporter votre premier lot.</p>
+  {% endif %}
+</div>
+
+<div class="card" style="margin-top: 16px;">
+  <h3>Historique des exports</h3>
+  <p class="card-sub">Vos 30 derniers téléchargements</p>
+  {% if history %}
+    <table class="simple-table">
+      <thead><tr><th>Date</th><th>Classe</th><th>Nombre de leads</th></tr></thead>
+      <tbody>
+        {% for h in history %}
+        <tr>
+          <td>{{ h.exported_at.replace('T', ' ')[:19] }}</td>
+          <td><span class="badge badge-{{ h.lead_class|lower }}">{{ h.lead_class }}</span></td>
+          <td>{{ h.nb_downloaded }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: var(--muted); font-size: 0.9rem; margin-top: 10px;">Aucun export à afficher.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

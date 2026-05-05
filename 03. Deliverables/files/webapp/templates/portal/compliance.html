@@ -1,0 +1,65 @@
+{% extends "portal/_layout.html" %}
+{% block title %}Conformité RGPD — Mon portail{% endblock %}
+
+{% block portal_content %}
+
+<div class="page-head">
+  <div>
+    <h1>🔒 Conformité &amp; RGPD</h1>
+    <div class="sub">Engagements, cadre légal et journal d'accès aux données.</div>
+  </div>
+</div>
+
+<div class="card-grid two">
+  <div class="card">
+    <h3>Cadre légal de notre prestation</h3>
+    <ul style="list-style: none; margin-top: 10px;">
+      <li style="padding: 8px 0 8px 24px; position: relative;"><span style="position: absolute; left: 0; color: var(--success); font-weight: 800;">✓</span> <strong>Base légale</strong> : intérêt légitime (Art. 6.1.f RGPD) pour le scoring interne</li>
+      <li style="padding: 8px 0 8px 24px; position: relative;"><span style="position: absolute; left: 0; color: var(--success); font-weight: 800;">✓</span> <strong>Consentement</strong> : transmission uniquement si <code style="background:var(--bg); padding:1px 6px; border-radius:4px;">optin_commercial_actuel = TRUE</code></li>
+      <li style="padding: 8px 0 8px 24px; position: relative;"><span style="position: absolute; left: 0; color: var(--success); font-weight: 800;">✓</span> <strong>Pseudonymisation</strong> : email et téléphone stockés en BYTES, jamais transmis en clair</li>
+      <li style="padding: 8px 0 8px 24px; position: relative;"><span style="position: absolute; left: 0; color: var(--success); font-weight: 800;">✓</span> <strong>Mineurs</strong> : exclusion des moins de 15 ans (3ème, 4ème)</li>
+      <li style="padding: 8px 0 8px 24px; position: relative;"><span style="position: absolute; left: 0; color: var(--success); font-weight: 800;">✓</span> <strong>AIPD</strong> : analyse d'impact réalisée et tenue à disposition</li>
+      <li style="padding: 8px 0 8px 24px; position: relative;"><span style="position: absolute; left: 0; color: var(--success); font-weight: 800;">✓</span> <strong>Rétention</strong> : 3 ans après dernier contact actif</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Documents à votre disposition</h3>
+    <ul style="list-style: none; margin-top: 10px;">
+      <li style="padding: 8px 0;">📄 <strong>DPA</strong> (Data Processing Agreement) — <span style="color: var(--success); font-weight: 700;">signé le 12/03/2026</span></li>
+      <li style="padding: 8px 0;">📄 <strong>AIPD</strong> (Analyse d'Impact RGPD) — version 1.2</li>
+      <li style="padding: 8px 0;">📄 <strong>Note de conformité</strong> · 14 pages</li>
+      <li style="padding: 8px 0;">📄 <strong>Politique de confidentialité</strong></li>
+    </ul>
+    <a href="{{ url_for('contact') }}" class="btn btn-outline btn-sm" style="margin-top: 10px;">Demander les documents</a>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 16px;">
+  <h3>Journal d'accès aux données</h3>
+  <p class="card-sub">Vos 30 dernières actions sur le portail (vues, exports, déconnexions).</p>
+  {% if logs %}
+  <table class="simple-table">
+    <thead><tr><th>Horodatage</th><th>Action</th><th>IP source</th><th>Navigateur</th></tr></thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td>{{ log.timestamp.replace('T', ' ')[:19] }}</td>
+        <td>{{ log.action }}</td>
+        <td style="color: var(--muted); font-family: monospace; font-size: 0.84rem;">{{ log.ip or '—' }}</td>
+        <td style="color: var(--muted); font-size: 0.82rem;" title="{{ log.user_agent }}">{{ (log.user_agent or '')[:40] }}…</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color: var(--muted); font-size: 0.9rem;">Aucune action enregistrée pour le moment.</p>
+  {% endif %}
+</div>
+
+<div class="alert-info" style="margin-top: 16px;">
+  ℹ️ Vous pouvez exercer à tout moment vos droits d'accès, de rectification ou d'effacement
+  en écrivant à <a href="mailto:dpo@letudiant.fr" style="color: var(--accent);">dpo@letudiant.fr</a>.
+</div>
+
+{% endblock %}

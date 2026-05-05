@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Tarifs — L'Étudiant Data{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top: 64px;">
+  <div class="container">
+    <div class="section-title">
+      <small>Tarifs 2026</small>
+      <h2>Une offre simple, deux modèles complémentaires</h2>
+      <p>Abonnement annuel pour le Baromètre, paiement à l'usage pour les Leads. Combinez les deux pour un effet multiplicateur.</p>
+    </div>
+
+    <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 18px;">📊 Baromètre des Intentions — abonnement annuel</h3>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Starter</h3>
+        <div class="price-val">6 000 €<small>/an HT</small></div>
+        <p class="price-desc">Pour les BTS, IUT et écoles régionales avec un seul campus.</p>
+        <ul>
+          <li>Dashboard 6 insights</li>
+          <li>Mise à jour mensuelle</li>
+          <li>3 utilisateurs</li>
+          <li>Filtres niveau / CSP / ville</li>
+          <li>Export PDF mensuel</li>
+          <li class="no">Leads CPL non inclus</li>
+          <li class="no">API d'accès</li>
+        </ul>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline btn-block">Demander un essai</a>
+      </div>
+
+      <div class="price-card featured">
+        <span class="ribbon">Le plus choisi</span>
+        <h3>Growth</h3>
+        <div class="price-val">14 000 €<small>/an HT</small></div>
+        <p class="price-desc">Pour les écoles multi-campus et les groupes éducatifs.</p>
+        <ul>
+          <li>Tout Starter, plus :</li>
+          <li>10 utilisateurs</li>
+          <li>Mise à jour bi-mensuelle</li>
+          <li>Comparaison concurrentielle</li>
+          <li>Alertes mail sur tendances</li>
+          <li>Export Excel détaillé</li>
+          <li class="no">Leads CPL non inclus</li>
+        </ul>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-block">Demander une démo</a>
+      </div>
+
+      <div class="price-card">
+        <h3>Premium</h3>
+        <div class="price-val">28 000 €<small>/an HT</small></div>
+        <p class="price-desc">Pour les universités, grandes écoles et groupes nationaux.</p>
+        <ul>
+          <li>Tout Growth, plus :</li>
+          <li>Utilisateurs illimités</li>
+          <li>Mise à jour hebdomadaire</li>
+          <li>Accès API REST</li>
+          <li>500 leads CPL inclus / an</li>
+          <li>Account Manager dédié</li>
+          <li>SLA 99,5 % &amp; support 24/7</li>
+        </ul>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline btn-block">Demander une démo</a>
+      </div>
+    </div>
+
+    <p style="text-align: center; color: var(--muted); margin-top: 18px; font-size: 0.88rem;">
+      Tous les tarifs s'entendent HT, facturation annuelle, engagement 12 mois minimum. <strong>+5 % par an</strong> les années 2 et 3.
+    </p>
+  </div>
+</section>
+
+<section class="section section-grey">
+  <div class="container">
+    <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">🎯 Leads Qualifiés — paiement à l'usage</h3>
+    <p style="color: var(--muted); margin-bottom: 20px;">Achetez les leads par lot mensuel. Pas d'engagement, pas de minimum, vous payez ce que vous consommez.</p>
+
+    <div class="cpl-grid">
+      <div class="cpl-card a">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="cls">A</div>
+          <div>
+            <div class="cpl-name">Lead chaud · score ≥ 55</div>
+            <div style="font-size: 0.82rem; color: var(--muted);">Volume mensuel suggéré : 50-300 leads</div>
+          </div>
+        </div>
+        <div class="cpl-price">32 €<span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> / lead</span></div>
+        <p class="cpl-desc">Intention forte, engagement élevé, profil complet. Conversion attendue 6-9 %.</p>
+      </div>
+
+      <div class="cpl-card b">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="cls">B</div>
+          <div>
+            <div class="cpl-name">Lead tiède · score 30-54</div>
+            <div style="font-size: 0.82rem; color: var(--muted);">Volume mensuel suggéré : 200-1000 leads</div>
+          </div>
+        </div>
+        <div class="cpl-price">11 €<span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> / lead</span></div>
+        <p class="cpl-desc">À nurturer sur 3-6 mois. Conversion 3-5 % avec une séquence appropriée.</p>
+      </div>
+
+      <div class="cpl-card c">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="cls">C</div>
+          <div>
+            <div class="cpl-name">Lead froid · score &lt; 30</div>
+            <div style="font-size: 0.82rem; color: var(--muted);">Volume mensuel suggéré : 1000+ leads</div>
+          </div>
+        </div>
+        <div class="cpl-price">3 €<span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> / lead</span></div>
+        <p class="cpl-desc">Brand awareness, retargeting display ou re-marketing email.</p>
+      </div>
+    </div>
+
+    <div class="alert-info" style="margin-top: 28px;">
+      💡 <strong>Combinez Premium + Leads</strong> pour bénéficier d'un tarif négocié dès 1500 leads/an. Contactez notre équipe pour un devis personnalisé.
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="text-align: center; max-width: 720px;">
+    <h2 style="font-size: 1.9rem; font-weight: 800;">Hésitations sur le bon plan ?</h2>
+    <p style="color: var(--muted); margin: 12px 0 24px;">30 minutes avec un expert produit pour identifier la formule la mieux alignée avec vos objectifs annuels d'inscription.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Programmer un appel</a>
+  </div>
+</section>
+
+{% endblock %}

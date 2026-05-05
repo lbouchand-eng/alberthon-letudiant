@@ -1,0 +1,104 @@
+{% extends "portal/_layout.html" %}
+{% block title %}Mon portail — L'Étudiant Data{% endblock %}
+
+{% block portal_content %}
+
+<div class="page-head">
+  <div>
+    <h1>Bonjour {{ current_user.school_name or 'Bienvenue' }} 👋</h1>
+    <div class="sub">Voici un aperçu de votre activité ce mois-ci.</div>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    {% if plan.barometre %}<a href="{{ url_for('portal_barometre') }}" class="btn btn-outline btn-sm">Ouvrir le Baromètre</a>{% endif %}
+    {% if plan.leads %}<a href="{{ url_for('portal_leads') }}" class="btn btn-primary btn-sm">Accéder aux leads</a>{% endif %}
+  </div>
+</div>
+
+<div class="kpi-grid" style="margin-bottom: 24px;">
+  <div class="kpi-card">
+    <div class="value">{{ "{:,.0f}".format(kpis.available_total).replace(',', ' ') }}</div>
+    <div class="label">Leads disponibles</div>
+    <div class="sub">avec consentement commercial</div>
+  </div>
+  <div class="kpi-card blue">
+    <div class="value">{{ kpis.available_a }}</div>
+    <div class="label">Leads chauds (A)</div>
+    <div class="sub">prioritaires pour vos commerciaux</div>
+  </div>
+  <div class="kpi-card green">
+    <div class="value">{{ kpis.consumed }}</div>
+    <div class="label">Leads consommés</div>
+    <div class="sub">ce trimestre</div>
+  </div>
+  <div class="kpi-card orange">
+    <div class="value">{{ kpis.remaining if kpis.quota else '∞' }}</div>
+    <div class="label">Quota restant</div>
+    <div class="sub">{% if kpis.quota %}sur {{ kpis.quota }} alloués{% else %}plan sans leads CPL{% endif %}</div>
+  </div>
+</div>
+
+<div class="card-grid two">
+  <div class="card">
+    <h3>Votre plan : {{ plan.label }}</h3>
+    <p class="card-sub">Tarif : {{ plan.price }}</p>
+
+    {% if kpis.quota %}
+      <div style="margin: 16px 0 8px;">
+        <div class="quota-meta">
+          <span>Consommation</span>
+          <span><strong>{{ kpis.consumed }}</strong> / {{ kpis.quota }} leads</span>
+        </div>
+        <div class="quota-bar">
+          <div class="quota-fill {% if kpis.quota_pct > 75 %}warning{% endif %}" style="width: {{ kpis.quota_pct }}%;"></div>
+        </div>
+        <div class="quota-meta" style="margin-top: 6px;">
+          <span>{{ kpis.quota_pct }} % utilisé</span>
+          <a href="{{ url_for('portal_billing') }}" style="color: var(--primary);">Détails →</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert-info" style="margin-top: 14px;">
+        Votre plan ne comprend pas l'achat de leads CPL.
+        <a href="{{ url_for('pricing') }}" style="color: var(--accent);">Découvrir les tarifs</a>.
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Dernière mise à jour Baromètre</h3>
+    <p class="card-sub">Données issues de BigQuery</p>
+    <div style="font-size: 1.1rem; font-weight: 700;">
+      {{ bdata.generated_at.replace('T', ' à ')[:16] }}
+    </div>
+    <div style="display: flex; gap: 14px; margin-top: 16px; font-size: 0.88rem;">
+      <div><strong>{{ "{:,.0f}".format(bdata.kpis.total_inscrits).replace(',', ' ') }}</strong> <span style="color: var(--muted);">inscrits</span></div>
+      <div><strong>{{ "{:,.0f}".format(bdata.kpis.total_conversations_agent).replace(',', ' ') }}</strong> <span style="color: var(--muted);">conversations IA</span></div>
+    </div>
+    {% if plan.barometre %}
+      <a href="{{ url_for('portal_barometre') }}" class="btn btn-outline btn-sm" style="margin-top: 18px;">Ouvrir le dashboard →</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card" style="margin-top: 16px;">
+  <h3>Activité récente</h3>
+  <p class="card-sub">Vos 5 derniers accès au portail</p>
+  {% if last_logs %}
+    <table class="simple-table">
+      <thead><tr><th>Date</th><th>Action</th><th>IP</th></tr></thead>
+      <tbody>
+        {% for log in last_logs %}
+        <tr>
+          <td>{{ log.timestamp.replace('T', ' ')[:19] }}</td>
+          <td>{{ log.action }}</td>
+          <td style="color: var(--muted); font-family: monospace; font-size: 0.84rem;">{{ log.ip or '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: var(--muted); font-size: 0.88rem;">Aucune activité enregistrée pour le moment.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

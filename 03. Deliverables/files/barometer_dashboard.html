@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baromètre des Intentions d'Orientation — L'Étudiant</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #E8242C;
+    --primary-dark: #b81c22;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  header h1 { font-size: 1.5rem; font-weight: 700; }
+  header p { font-size: 0.85rem; opacity: 0.85; margin-top: 2px; }
+  .badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.4); }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 20px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card {
+    background: var(--card); border-radius: 12px; padding: 20px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 4px solid var(--primary);
+  }
+  .kpi-card .value { font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1; }
+  .kpi-card .label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-card .sub { font-size: 0.82rem; color: var(--text); margin-top: 6px; }
+
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .chart-card {
+    background: var(--card); border-radius: 12px; padding: 20px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .chart-card.full { grid-column: 1 / -1; }
+  .chart-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+  .chart-subtitle { font-size: 0.78rem; color: var(--muted); margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 280px; }
+  .chart-wrap.tall { height: 340px; }
+
+  .filter-bar {
+    background: var(--card); border-radius: 12px; padding: 14px 24px;
+    margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .filter-bar label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+  .filter-bar select {
+    border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px;
+    font-size: 0.85rem; color: var(--text); background: white; cursor: pointer;
+  }
+  .filter-bar select:focus { outline: none; border-color: var(--primary); }
+  .data-meta { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+
+  .salon-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .salon-table th { background: #f9fafb; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 0.78rem; color: var(--muted); text-transform: uppercase; border-bottom: 2px solid var(--border); }
+  .salon-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  .salon-table tr:last-child td { border-bottom: none; }
+  .bar-cell { display: flex; align-items: center; gap: 8px; }
+  .bar-fill { height: 8px; border-radius: 4px; background: var(--primary); transition: width 0.3s; }
+  .bar-bg { flex: 1; background: #f3f4f6; border-radius: 4px; height: 8px; }
+
+  footer { text-align: center; padding: 20px; font-size: 0.75rem; color: var(--muted); }
+
+  .loading { padding: 40px; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📊 Baromètre des Intentions d'Orientation</h1>
+    <p>L'Étudiant × Alberthon — Saison 2025/2026</p>
+  </div>
+  <span class="badge">🔴 Live — données BigQuery (via barometer_data.json)</span>
+</header>
+
+<div class="container" id="app">
+  <div class="loading">Chargement des données BigQuery...</div>
+</div>
+
+<footer>Baromètre Alberthon × L'Étudiant · Source : letudiant-data-prod.Hacka_g23 · Hackathon 2026</footer>
+
+<script>
+// ─── COULEURS ─────────────────────────────────────────────────────────────────
+const RED = '#E8242C', BLUE = '#2563eb', GREEN = '#059669', ORANGE = '#d97706';
+
+// ─── CHARGEMENT DES DONNÉES ───────────────────────────────────────────────────
+// Le dashboard fait fetch() sur barometer_data.json à chaque ouverture/refresh.
+// Le JSON est régénéré par le script Python (pipeline BigQuery → JSON).
+// Démo "live" : relancer le script → refresh la page → données mises à jour.
+async function loadData() {
+  // cache-busting pour garantir la fraîcheur en démo
+  const url = `barometer_data.json?t=${Date.now()}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    document.getElementById('app').innerHTML =
+      `<div class="loading" style="color:#E8242C">
+        ❌ Impossible de charger barometer_data.json — vérifie qu'il est dans le même dossier.<br>
+        <small>${err.message}</small>
+      </div>`;
+    throw err;
+  }
+}
+
+// ─── RENDU DU SHELL HTML ──────────────────────────────────────────────────────
+function renderShell(meta) {
+  const generatedDate = new Date(meta.generated_at).toLocaleString('fr-FR', {
+    day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+  });
+  document.getElementById('app').innerHTML = `
+    <div class="filter-bar">
+      <label>Filtres :</label>
+      <select id="filterNiveau" onchange="applyFilters()">
+        <option value="all">Tous niveaux</option>
+        <option value="Terminale">Terminale</option>
+        <option value="Première">Première</option>
+        <option value="Bac+1">Bac+1</option>
+        <option value="Bac+2">Bac+2</option>
+        <option value="Bac+3">Bac+3</option>
+        <option value="3ème">3ème</option>
+      </select>
+      <select id="filterCSP" onchange="applyFilters()">
+        <option value="all">Tous profils CSP</option>
+        <option value="CSP+">CSP+</option>
+        <option value="CSP-">CSP−</option>
+      </select>
+      <select id="filterVille" onchange="applyFilters()">
+        <option value="all">Toutes villes salon</option>
+        <option value="PARIS">Paris</option>
+        <option value="LYON">Lyon</option>
+        <option value="LILLE">Lille</option>
+        <option value="BORDEAUX">Bordeaux</option>
+        <option value="RENNES">Rennes</option>
+        <option value="NANTES">Nantes</option>
+      </select>
+      <span class="data-meta">⏱ Dernière maj : <strong>${generatedDate}</strong></span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="value">${(meta.kpis.total_inscrits/1e6).toFixed(1)}M</div>
+        <div class="label">Inscrits actifs</div>
+        <div class="sub">base CRM L'Étudiant</div>
+      </div>
+      <div class="kpi-card">
+        <div class="value">${meta.kpis.total_conversations_agent.toLocaleString('fr')}</div>
+        <div class="label">Conversations orientation</div>
+        <div class="sub">agent conversationnel IA</div>
+      </div>
+      <div class="kpi-card" style="border-left-color:#2563eb">
+        <div class="value" style="color:#2563eb">${meta.kpis.tx_ouverture_terminale}%</div>
+        <div class="label">Taux d'ouverture email</div>
+        <div class="sub">Terminales · 2× la moyenne marché</div>
+      </div>
+      <div class="kpi-card" style="border-left-color:#059669">
+        <div class="value" style="color:#059669">${meta.kpis.tx_presence_salons}%</div>
+        <div class="label">Taux de présence salons</div>
+        <div class="sub">inscrits effectivement venus</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">📚 Insight 1 — Top filières par volume d'intention</div>
+        <div class="chart-subtitle">Nb d'inscrits par domaine d'étude déclaré · base 4M inscrits</div>
+        <div class="chart-wrap"><canvas id="chartDomaines"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">💬 Insight 2 — Activité agent conversationnel</div>
+        <div class="chart-subtitle">Nb de conversations orientation par mois · saison 2025/2026</div>
+        <div class="chart-wrap"><canvas id="chartConv"></canvas></div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">📧 Insight 3 — Engagement email par niveau scolaire</div>
+        <div class="chart-subtitle">Taux d'ouverture moyen · les Terminales surperforment nettement</div>
+        <div class="chart-wrap"><canvas id="chartCRM"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🏙️ Insight 4 — Présence aux salons par ville</div>
+        <div class="chart-subtitle">Inscrits vs venus · saison 25/26</div>
+        <div class="chart-wrap"><canvas id="chartSalons"></canvas></div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card full">
+        <div class="chart-title">💰 Insight 5 — Profil CSP par filière d'intention</div>
+        <div class="chart-subtitle">Données INSEE probabilistes agrégées (somme des probas) · permet aux établissements de cibler des bassins compatibles avec leur grille tarifaire</div>
+        <div class="chart-wrap tall"><canvas id="chartCSP"></canvas></div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card full">
+        <div class="chart-title">🎯 Insight 6 — Distribution des leads scorés (sortie pipeline)</div>
+        <div class="chart-subtitle">Répartition A/B/C sur l'échantillon scoré · base à laquelle s'appliquent les prix CPL différenciés</div>
+        <div class="chart-wrap"><canvas id="chartLeadDist"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-bottom:24px">
+      <div class="chart-title">📋 Détail salons — Saison 25/26</div>
+      <div class="chart-subtitle" style="margin-bottom:16px">Taux de présence par salon · signal de maturité décisionnelle</div>
+      <table class="salon-table">
+        <thead><tr><th>Ville</th><th>Inscrits</th><th>Venus</th><th>Taux présence</th><th></th></tr></thead>
+        <tbody id="salonTableBody"></tbody>
+      </table>
+    </div>
+  `;
+}
+
+// ─── CONSTRUCTION DES CHARTS ─────────────────────────────────────────────────
+let chartDomaines, chartConv, chartCRM, chartSalons, chartCSP, chartLeadDist;
+
+function buildCharts(D) {
+  chartDomaines = new Chart(document.getElementById('chartDomaines'), {
+    type: 'bar',
+    data: {
+      labels: D.domaines.labels,
+      datasets: [{ label:'Inscrits', data: D.domaines.values,
+        backgroundColor: D.domaines.values.map((_,i)=> i===0?RED:'#e5e7eb'), borderRadius: 4 }]
+    },
+    options: { indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{ x:{ticks:{callback:v=>(v/1000).toFixed(0)+'k'}, grid:{color:'#f3f4f6'}}, y:{ticks:{font:{size:11}}} } }
+  });
+
+  chartConv = new Chart(document.getElementById('chartConv'), {
+    type: 'line',
+    data: { labels: D.conversations.labels, datasets:[{ label:'Conversations', data: D.conversations.values,
+      borderColor:RED, backgroundColor:'rgba(232,36,44,0.08)', borderWidth:2.5, pointRadius:4, pointBackgroundColor:RED, fill:true, tension:0.3 }]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ y:{ticks:{callback:v=>v.toLocaleString('fr')}, grid:{color:'#f3f4f6'}}, x:{grid:{display:false}} } }
+  });
+
+  chartCRM = new Chart(document.getElementById('chartCRM'), {
+    type: 'bar',
+    data: { labels: D.crm.labels, datasets:[
+      { label:"Taux d'ouverture (%)", data: D.crm.ouverture, backgroundColor: BLUE,   borderRadius:4, yAxisID:'y' },
+      { label:"Taux de clic (%)",     data: D.crm.clic,      backgroundColor: ORANGE, borderRadius:4, yAxisID:'y2' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top',labels:{font:{size:11}}}},
+      scales:{ y:{title:{display:true,text:'Ouverture (%)',font:{size:10}}, grid:{color:'#f3f4f6'}},
+               y2:{title:{display:true,text:'Clic (%)',font:{size:10}}, position:'right', grid:{display:false}},
+               x:{grid:{display:false}} } }
+  });
+
+  chartSalons = new Chart(document.getElementById('chartSalons'), {
+    type: 'bar',
+    data: { labels: D.salons.labels, datasets:[
+      { label:'Inscrits', data: D.salons.inscrits, backgroundColor:'#e5e7eb', borderRadius:4 },
+      { label:'Venus',    data: D.salons.venus,    backgroundColor: GREEN,    borderRadius:4 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top',labels:{font:{size:11}}}},
+      scales:{ y:{ticks:{callback:v=>(v/1000).toFixed(0)+'k'}, grid:{color:'#f3f4f6'}}, x:{grid:{display:false}} } }
+  });
+
+  // CSP : 2 catégories seulement (CSP+ / CSP-) — la donnée est binaire.
+  // Bug v1 corrigé : on aggrège la SOMME des probabilités (espérance) plutôt que threshold-based.
+  chartCSP = new Chart(document.getElementById('chartCSP'), {
+    type: 'bar',
+    data: { labels: D.csp.labels, datasets:[
+      { label:'CSP+', data: D.csp.cspPlus,  backgroundColor: GREEN, borderRadius:2 },
+      { label:'CSP−', data: D.csp.cspMoins, backgroundColor: RED,   borderRadius:2 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{position:'top',labels:{font:{size:11}}},
+                tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw.toLocaleString('fr')}`}} },
+      scales:{ x:{stacked:true, grid:{display:false}}, y:{stacked:true, ticks:{callback:v=>(v/1000).toFixed(0)+'k'}, grid:{color:'#f3f4f6'}} } }
+  });
+
+  // Lead distribution (NOUVEAU widget : sortie directe du pipeline)
+  chartLeadDist = new Chart(document.getElementById('chartLeadDist'), {
+    type: 'doughnut',
+    data: { labels: D.lead_distribution.labels, datasets:[{
+      data: D.lead_distribution.values,
+      backgroundColor: [RED, ORANGE, '#9ca3af'],
+      borderWidth: 0,
+    }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{position:'right',labels:{font:{size:12}}},
+        tooltip:{callbacks:{label:ctx=>{
+          const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+          const pct = (ctx.raw/total*100).toFixed(1);
+          return `${ctx.label}: ${ctx.raw.toLocaleString('fr')} (${pct}%)`;
+        }}}
+      } }
+  });
+}
+
+// ─── TABLEAU SALONS ───────────────────────────────────────────────────────────
+function renderSalonTable(data) {
+  const tbody = document.getElementById('salonTableBody');
+  if (!data || !data.length) { tbody.innerHTML = ''; return; }
+  const maxInscrits = Math.max(...data.map(r => r.inscrits));
+  tbody.innerHTML = data.map(r => `
+    <tr>
+      <td><strong>${r.ville}</strong></td>
+      <td>${r.inscrits.toLocaleString('fr')}</td>
+      <td>${r.venus.toLocaleString('fr')}</td>
+      <td><strong style="color:${r.taux>=70?'#059669':r.taux>=50?'#d97706':'#ef4444'}">${r.taux}%</strong></td>
+      <td style="width:200px"><div class="bar-cell">
+        <div class="bar-bg"><div class="bar-fill" style="width:${(r.venus/maxInscrits*100).toFixed(0)}%"></div></div>
+      </div></td>
+    </tr>`).join('');
+}
+
+// ─── FILTRES ──────────────────────────────────────────────────────────────────
+let RAW;  // données brutes en mémoire pour le filtrage
+function applyFilters() {
+  const niveau = document.getElementById('filterNiveau').value;
+  const csp    = document.getElementById('filterCSP').value;
+  const ville  = document.getElementById('filterVille').value;
+
+  // Filtre niveau → highlight chart CRM
+  if (niveau !== 'all') {
+    const idx = RAW.crm.labels.findIndex(l => l.includes(niveau));
+    chartCRM.data.datasets[0].backgroundColor = RAW.crm.labels.map((_,i)=> i===idx ? BLUE : '#d1d5db');
+    chartCRM.data.datasets[1].backgroundColor = RAW.crm.labels.map((_,i)=> i===idx ? ORANGE : '#e5e7eb');
+  } else {
+    chartCRM.data.datasets[0].backgroundColor = BLUE;
+    chartCRM.data.datasets[1].backgroundColor = ORANGE;
+  }
+  chartCRM.update();
+
+  // Filtre ville → table + highlight chart Salons
+  if (ville !== 'all') {
+    const filtered = RAW.salons_table.filter(r => r.ville.includes(ville));
+    renderSalonTable(filtered.length ? filtered : RAW.salons_table);
+    chartSalons.data.datasets[1].backgroundColor = RAW.salons.labels.map(l =>
+      l.toUpperCase() === ville ? GREEN : '#9ca3af');
+  } else {
+    renderSalonTable(RAW.salons_table);
+    chartSalons.data.datasets[1].backgroundColor = GREEN;
+  }
+  chartSalons.update();
+
+  // Filtre CSP → masque la série non sélectionnée
+  if (csp === 'CSP+') {
+    chartCSP.data.datasets[0].hidden = false;
+    chartCSP.data.datasets[1].hidden = true;
+  } else if (csp === 'CSP-') {
+    chartCSP.data.datasets[0].hidden = true;
+    chartCSP.data.datasets[1].hidden = false;
+  } else {
+    chartCSP.data.datasets.forEach(ds => ds.hidden = false);
+  }
+  chartCSP.update();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+(async function init() {
+  RAW = await loadData();
+  renderShell(RAW);
+  buildCharts(RAW);
+  renderSalonTable(RAW.salons_table);
+})();
+</script>
+</body>
+</html>

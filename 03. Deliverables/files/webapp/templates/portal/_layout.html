@@ -1,0 +1,48 @@
+{# Portal sub-layout: sidebar + main content. Inherit from base.html. #}
+{% extends "base.html" %}
+{% set hide_footer = True %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  {% block portal_head %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="portal">
+  <aside class="sidebar">
+    <div class="who">
+      <div class="name">{{ current_user.school_name or current_user.email }}</div>
+      <div class="plan">{{ current_user.plan_label }}</div>
+    </div>
+
+    <a href="{{ url_for('portal_home') }}"       class="{% if request.endpoint == 'portal_home' %}active{% endif %}">
+      <span class="icon">🏠</span> Tableau de bord
+    </a>
+    <a href="{{ url_for('portal_barometre') }}"  class="{% if request.endpoint == 'portal_barometre' %}active{% endif %}">
+      <span class="icon">📊</span> Baromètre
+    </a>
+    <a href="{{ url_for('portal_leads') }}"      class="{% if request.endpoint == 'portal_leads' %}active{% endif %}">
+      <span class="icon">🎯</span> Leads scorés
+    </a>
+    <a href="{{ url_for('portal_billing') }}"    class="{% if request.endpoint == 'portal_billing' %}active{% endif %}">
+      <span class="icon">💳</span> Consommation
+    </a>
+    <a href="{{ url_for('portal_compliance') }}" class="{% if request.endpoint == 'portal_compliance' %}active{% endif %}">
+      <span class="icon">🔒</span> Conformité RGPD
+    </a>
+
+    <div class="sidebar-bottom">
+      <a href="{{ url_for('portal_profile') }}"  class="{% if request.endpoint == 'portal_profile' %}active{% endif %}">
+        <span class="icon">👤</span> Mon profil
+      </a>
+      <a href="{{ url_for('home') }}">
+        <span class="icon">↗</span> Site public
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    {% block portal_content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}Leads Qualifiés Intent-Based — L'Étudiant{% endblock %}
+
+{% block content %}
+
+<section class="hero" style="padding: 60px 24px 80px;">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-eyebrow">🎯 Produit n°2 — CPL</span>
+      <h1>Leads scorés A/B/C, sur l'intention réelle.</h1>
+      <p class="lead">Un score sur 100 points, trois dimensions, conversion 6-9 % vs 2-3 % sur les leads génériques. Et un opt-in commercial RGPD garanti à la source.</p>
+      <div class="hero-ctas">
+        <a href="{{ url_for('pricing') }}" class="btn btn-primary btn-lg">Voir le pricing</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-ghost btn-lg">Demander une démo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <small>Le scoring intent-based</small>
+      <h2>3 dimensions · 100 points · 1 score d'intention</h2>
+      <p>Notre algorithme combine 5 signaux comportementaux et déclaratifs pour évaluer la probabilité réelle d'inscription d'un étudiant.</p>
+    </div>
+
+    <div class="card-grid three" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <div class="card" style="padding: 32px; border-top: 4px solid var(--primary);">
+        <h3 style="color: var(--primary);">Fraîcheur</h3>
+        <div style="font-size: 2.4rem; font-weight: 900; color: var(--primary); margin: 4px 0;">30 pts</div>
+        <p class="card-sub">Récence de l'activité.</p>
+        <ul style="list-style:none; font-size: 0.88rem;">
+          <li style="padding: 5px 0;">+15 pts · Statut Actif / Toujours inscrit</li>
+          <li style="padding: 5px 0;">+15 pts · Inscription < 6 mois</li>
+          <li style="padding: 5px 0;">+10 pts · Inscription 6-12 mois</li>
+          <li style="padding: 5px 0;">+5 pts · Inscription 12-24 mois</li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding: 32px; border-top: 4px solid var(--accent);">
+        <h3 style="color: var(--accent);">Clarté de l'intention</h3>
+        <div style="font-size: 2.4rem; font-weight: 900; color: var(--accent); margin: 4px 0;">40 pts</div>
+        <p class="card-sub">Précision du projet d'orientation.</p>
+        <ul style="list-style:none; font-size: 0.88rem;">
+          <li style="padding: 5px 0;">+15 pts · Domaine d'étude précis</li>
+          <li style="padding: 5px 0;">+10 pts · Niveau scolaire renseigné</li>
+          <li style="padding: 5px 0;">+10 pts · Utilisation agent IA</li>
+          <li style="padding: 5px 0;">+5 pts · Présence physique salon</li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding: 32px; border-top: 4px solid var(--success);">
+        <h3 style="color: var(--success);">Engagement</h3>
+        <div style="font-size: 2.4rem; font-weight: 900; color: var(--success); margin: 4px 0;">30 pts</div>
+        <p class="card-sub">Intensité comportementale.</p>
+        <ul style="list-style:none; font-size: 0.88rem;">
+          <li style="padding: 5px 0;">+10 pts · &gt; 5 emails ouverts</li>
+          <li style="padding: 5px 0;">+10 pts · &gt; 2 emails cliqués</li>
+          <li style="padding: 5px 0;">+10 pts · ≥ 2 salons fréquentés</li>
+          <li style="padding: 5px 0;">+5 pts · activité partielle</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-grey">
+  <div class="container">
+    <div class="section-title">
+      <small>3 classes de leads</small>
+      <h2>Du chaud au froid — un prix par profil</h2>
+      <p>Chaque lead est classé selon son score total. Vous payez à l'usage, uniquement les profils alignés avec votre stratégie.</p>
+    </div>
+
+    <div class="cpl-grid">
+      <div class="cpl-card a">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="cls">A</div>
+          <div>
+            <div class="cpl-name">Lead chaud</div>
+            <div style="font-size: 0.82rem; color: var(--muted);">Score ≥ 55/100</div>
+          </div>
+        </div>
+        <div class="cpl-price">32 €<span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> / lead</span></div>
+        <p class="cpl-desc">Intention forte + engagement élevé. Cible prioritaire pour vos commerciaux : transmission directe au CRM en moins de 24 h.</p>
+        <ul style="list-style:none; font-size: 0.86rem; color: var(--text-soft);">
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Conversion attendue : 6-9 %</li>
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Filière + niveau confirmés</li>
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Profil CSP enrichi (INSEE)</li>
+        </ul>
+      </div>
+
+      <div class="cpl-card b">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="cls">B</div>
+          <div>
+            <div class="cpl-name">Lead tiède</div>
+            <div style="font-size: 0.82rem; color: var(--muted);">Score 30-54</div>
+          </div>
+        </div>
+        <div class="cpl-price">11 €<span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> / lead</span></div>
+        <p class="cpl-desc">À nurturer via email & retargeting. Conversion progressive sur 3-6 mois.</p>
+        <ul style="list-style:none; font-size: 0.86rem; color: var(--text-soft);">
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Conversion attendue : 3-5 %</li>
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Domaine déclaré</li>
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Au moins un signal d'engagement</li>
+        </ul>
+      </div>
+
+      <div class="cpl-card c">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="cls">C</div>
+          <div>
+            <div class="cpl-name">Lead froid</div>
+            <div style="font-size: 0.82rem; color: var(--muted);">Score &lt; 30</div>
+          </div>
+        </div>
+        <div class="cpl-price">3 €<span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> / lead</span></div>
+        <p class="cpl-desc">Volume pour campagnes notoriété ou retargeting très large.</p>
+        <ul style="list-style:none; font-size: 0.86rem; color: var(--text-soft);">
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Conversion attendue : &lt; 1 %</li>
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Profil partiel</li>
+          <li style="padding: 4px 0 4px 22px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Idéal pour brand awareness</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert-info" style="margin-top: 32px;">
+      🔒 <strong>RGPD by design.</strong> Seuls les contacts avec consentement commercial actif (`optin_commercial_actuel = TRUE`) sont transmis. Email et téléphone pseudonymisés à la source. DPA signé sous 48 h avant tout export.
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <small>Cas d'usage</small>
+      <h2>Comment vos commerciaux exploitent les leads</h2>
+    </div>
+
+    <div class="card-grid two" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="card" style="padding: 28px;">
+        <h3>📥 Import CRM en 1 clic</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Export CSV compatible HubSpot, Salesforce, Pipedrive. Mappings champ-à-champ pré-définis. Ajout automatique d'une étape « Lead L'Étudiant » dans vos pipelines.</p>
+      </div>
+      <div class="card" style="padding: 28px;">
+        <h3>📞 Séquences nurturing</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Modèles de séquences (5 emails + 2 appels) par classe A/B/C, validés sur 1200 écoles. Recommandation : contacter un lead A en moins de 48 h.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="text-align: center; max-width: 720px;">
+    <h2 style="font-size: 2rem; font-weight: 800;">Recevez un lot de 100 leads test</h2>
+    <p style="color: var(--muted); margin: 12px 0 28px;">Démarrez avec un échantillon gratuit · 50 leads A et 50 leads B sur votre filière.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Demander un échantillon</a>
+  </div>
+</section>
+
+{% endblock %}

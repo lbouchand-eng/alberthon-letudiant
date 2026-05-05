@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Articles — L'Étudiant Data{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top: 56px;">
+  <div class="container">
+    <div class="section-title">
+      <small>Le Mag de la donnée d'orientation</small>
+      <h2>Articles &amp; analyses</h2>
+      <p>Tendances, méthodologie, conformité, business intelligence. Toute l'actualité de la donnée pour les écoles et les universités.</p>
+    </div>
+
+    {% if articles %}
+    <div class="articles-grid">
+      {% for art in articles %}
+        <a class="article-card" href="{{ url_for('article_detail', slug=art.slug) }}">
+          <div class="article-cover">{{ art.title[:1]|upper }}</div>
+          <div class="article-meta">
+            <span class="article-cat">{{ art.category }}</span>
+            <span class="article-date">{{ art.published_at[:10] }}</span>
+          </div>
+          <h3>{{ art.title }}</h3>
+          <p>{{ art.excerpt }}</p>
+        </a>
+      {% endfor %}
+    </div>
+    {% else %}
+      <p style="text-align:center; color: var(--muted);">Aucun article publié pour le moment.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

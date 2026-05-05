@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}L'Étudiant — Transformez les intentions en inscriptions{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-eyebrow">⭐ Plateforme officielle L'Étudiant — Saison 25/26</span>
+      <h1>Transformez les intentions en inscriptions.</h1>
+      <p class="lead">
+        4 millions d'étudiants. Des leads scorés A/B/C en temps réel. Un baromètre actualisé chaque mois. La donnée d'orientation la plus complète du marché français — désormais disponible pour votre école.
+      </p>
+      <div class="hero-ctas">
+        <a href="{{ url_for('pricing') }}" class="btn btn-primary btn-lg">Voir les tarifs</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-ghost btn-lg">Demander une démo</a>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <div class="hero-illu-row" style="margin-bottom: 12px;">
+        <div class="hero-illu-card">
+          <div class="v">{{ '%.1f'|format(kpis.total_inscrits / 1e6) }}M</div>
+          <div class="l">Inscrits actifs</div>
+        </div>
+        <div class="hero-illu-card">
+          <div class="v">{{ "{:,.0f}".format(kpis.total_conversations_agent).replace(',', ' ') }}</div>
+          <div class="l">Conversations IA</div>
+        </div>
+      </div>
+      <div class="hero-illu-row">
+        <div class="hero-illu-card">
+          <div class="v">{{ kpis.tx_ouverture_terminale }}%</div>
+          <div class="l">Open rate Terminales</div>
+        </div>
+        <div class="hero-illu-card">
+          <div class="v">{{ kpis.tx_presence_salons }}%</div>
+          <div class="l">Présence salons</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="trust-strip">
+      <span>📊 4 058 555 inscrits</span>
+      <span>🤖 56 605 conversations IA</span>
+      <span>🏛️ 3,5 M de présences salons</span>
+      <span>📧 250 M d'événements CRM</span>
+      <span>🔒 RGPD ready</span>
+    </div>
+  </div>
+</section>
+
+<section class="section section-grey">
+  <div class="container">
+    <div class="section-title">
+      <small>Nos 2 produits</small>
+      <h2>Pilotez votre acquisition étudiante par la donnée</h2>
+      <p>Du signal de marché au lead actionnable, deux solutions complémentaires pour les écoles, BTS, IUT et universités.</p>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-icon">📊</div>
+        <span class="tag">SaaS · abonnement annuel</span>
+        <h3>Baromètre des Intentions d'Orientation</h3>
+        <p>Dashboard temps réel des tendances d'orientation, mis à jour mensuellement. Pilotez votre stratégie marketing avec les vrais signaux du marché.</p>
+        <ul>
+          <li>Top filières par volume d'intention (4 M d'inscrits)</li>
+          <li>Engagement email & présence salons par bassin</li>
+          <li>Profils CSP par filière (méthode INSEE probabiliste)</li>
+          <li>6 insights actualisés chaque mois</li>
+        </ul>
+        <a href="{{ url_for('product_barometre') }}" class="btn btn-outline">Découvrir le Baromètre →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon">🎯</div>
+        <span class="tag">CPL · à l'usage</span>
+        <h3>Leads Qualifiés Intent-Based</h3>
+        <p>Flux mensuel de leads étudiants scorés A/B/C selon leur intention réelle d'inscription. Conversion 6-9 % vs 2-3 % sur les leads génériques.</p>
+        <ul>
+          <li>Scoring 3 dimensions sur 100 pts (fraîcheur · intention · engagement)</li>
+          <li>Filtrage par filière, niveau scolaire, région</li>
+          <li>Export CSV intégrable à votre CRM (HubSpot, Salesforce)</li>
+          <li>RGPD compliant — uniquement consentements actifs</li>
+        </ul>
+        <a href="{{ url_for('product_leads') }}" class="btn btn-outline">Découvrir les Leads →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <small>Témoignages</small>
+      <h2>Pourquoi les écoles passent à L'Étudiant Data</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <p class="quote">Avec les leads A, nous sommes passés d'un coût d'acquisition à 420 € à 215 €. La granularité par filière nous permet de cibler nos campagnes sur les bassins qui convertissent vraiment.</p>
+        <div class="author">
+          <div class="avatar">CL</div>
+          <div>
+            <div class="author-name">Claire Lefranc</div>
+            <div class="author-role">Directrice marketing — école de commerce, 8 campus</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <p class="quote">Le Baromètre a transformé notre conseil d'administration. Voir en temps réel l'évolution des intentions par filière nous a sauvés sur deux décisions de positionnement majeures.</p>
+        <div class="author">
+          <div class="avatar">JM</div>
+          <div>
+            <div class="author-name">Jean Marrand</div>
+            <div class="author-role">Directeur — IUT Sciences appliquées</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <p class="quote">L'export CSV propre, opt-in only, traçable : enfin un fournisseur de leads qui prend la conformité au sérieux. Notre DPO a validé le DPA en trois jours.</p>
+        <div class="author">
+          <div class="avatar">SR</div>
+          <div>
+            <div class="author-name">Sarah Rousseau</div>
+            <div class="author-role">DPO — Université privée</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-grey">
+  <div class="container">
+    <div class="section-title">
+      <small>Cas d'usage</small>
+      <h2>3 façons d'utiliser nos données</h2>
+    </div>
+
+    <div class="card-grid three" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.7rem; margin-bottom: 12px;">🎯</div>
+        <h3>Acquisition payante optimisée</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Importez les leads A dans HubSpot ou Salesforce. Lancez vos séquences nurturing avec un taux de conversion 3× supérieur à vos canaux génériques.</p>
+      </div>
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.7rem; margin-bottom: 12px;">📈</div>
+        <h3>Pilotage stratégique</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Suivez chaque mois l'évolution des intentions sur vos filières concurrentes. Anticipez les retournements de marché 6 mois avant Parcoursup.</p>
+      </div>
+      <div class="card" style="padding: 28px;">
+        <div style="font-size: 1.7rem; margin-bottom: 12px;">💼</div>
+        <h3>Stratégie tarifaire</h3>
+        <p style="color: var(--text-soft); margin-top: 8px; font-size: 0.92rem;">Identifiez les bassins CSP+ compatibles avec votre grille tarifaire. Calibrez vos politiques de bourses sur les profils socio-économiques réels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width: 880px; text-align: center;">
+    <h2 style="font-size: 2rem; font-weight: 800; letter-spacing: -0.5px;">Prêt à faire de la donnée votre avantage compétitif ?</h2>
+    <p style="color: var(--muted); margin: 14px 0 28px;">Démo guidée 30 minutes · sans engagement · accès à un compte de test sur le portail.</p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Demander une démo</a>
+      <a href="{{ url_for('pricing') }}" class="btn btn-ghost btn-lg">Voir les tarifs</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

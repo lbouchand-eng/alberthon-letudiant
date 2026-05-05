@@ -1,0 +1,251 @@
+{
+  "generated_at": "2026-04-28T18:59:37",
+  "source": "BigQuery letudiant-data-prod.Hacka_g23 (échantillon 5k)",
+  "kpis": {
+    "total_inscrits": 4058555,
+    "total_conversations_agent": 56605,
+    "tx_ouverture_terminale": 47.1,
+    "tx_presence_salons": 72.0
+  },
+  "domaines": {
+    "labels": [
+      "Commerce, vente",
+      "Indécis",
+      "Santé, paramédical",
+      "Arts, audiovisuel",
+      "Communication",
+      "Économie",
+      "Droit, science politique",
+      "International",
+      "Digital, Informatique",
+      "Sport",
+      "Lettres, langues"
+    ],
+    "values": [
+      719775,
+      608796,
+      479952,
+      465790,
+      452271,
+      438343,
+      433456,
+      414039,
+      413220,
+      384615,
+      329757
+    ]
+  },
+  "conversations": {
+    "labels": [
+      "Sep 25",
+      "Oct 25",
+      "Nov 25",
+      "Déc 25",
+      "Jan 26",
+      "Fév 26",
+      "Mar 26",
+      "Avr 26"
+    ],
+    "values": [
+      8381,
+      6170,
+      5831,
+      3878,
+      12710,
+      8905,
+      8292,
+      2438
+    ]
+  },
+  "crm": {
+    "labels": [
+      "Terminale tech.",
+      "Terminale",
+      "Bac+1",
+      "Première",
+      "Bac+2",
+      "Bac+3",
+      "Seconde",
+      "3ème"
+    ],
+    "ouverture": [
+      49.4,
+      47.1,
+      46.1,
+      46.0,
+      45.0,
+      44.2,
+      43.3,
+      38.5
+    ],
+    "clic": [
+      0.61,
+      1.1,
+      0.82,
+      1.29,
+      0.7,
+      0.8,
+      1.13,
+      1.22
+    ]
+  },
+  "salons": {
+    "labels": [
+      "Paris",
+      "Lille",
+      "Lyon",
+      "Bordeaux",
+      "Rennes",
+      "Marseille",
+      "Nantes",
+      "Montpellier",
+      "Toulouse",
+      "Caen"
+    ],
+    "inscrits": [
+      198746,
+      84145,
+      72869,
+      49152,
+      45994,
+      43128,
+      42386,
+      41954,
+      24491,
+      19328
+    ],
+    "venus": [
+      102178,
+      58636,
+      45835,
+      31784,
+      30899,
+      26900,
+      27351,
+      29343,
+      13145,
+      14353
+    ]
+  },
+  "csp": {
+    "labels": [
+      "Commerce",
+      "Indécis",
+      "Santé",
+      "Arts",
+      "Communication",
+      "Économie",
+      "Droit",
+      "International",
+      "Digital"
+    ],
+    "cspPlus": [
+      55968,
+      47653,
+      32436,
+      33302,
+      38046,
+      35373,
+      32897,
+      32277,
+      26225
+    ],
+    "cspMoins": [
+      227318,
+      197483,
+      143704,
+      143650,
+      147835,
+      135897,
+      131880,
+      125194,
+      106895
+    ]
+  },
+  "salons_table": [
+    {
+      "ville": "PARIS 2026-01-30",
+      "inscrits": 46712,
+      "venus": 25976,
+      "taux": 55.61
+    },
+    {
+      "ville": "LILLE 2026-01-15",
+      "inscrits": 61253,
+      "venus": 46430,
+      "taux": 75.8
+    },
+    {
+      "ville": "LYON 2026-01-09",
+      "inscrits": 45172,
+      "venus": 31784,
+      "taux": 70.36
+    },
+    {
+      "ville": "MONTPELLIER 2026-01-15",
+      "inscrits": 30244,
+      "venus": 23785,
+      "taux": 78.64
+    },
+    {
+      "ville": "RENNES 2026-01-09",
+      "inscrits": 29878,
+      "venus": 22412,
+      "taux": 75.01
+    },
+    {
+      "ville": "BORDEAUX 2026-01-09",
+      "inscrits": 29087,
+      "venus": 21539,
+      "taux": 74.05
+    },
+    {
+      "ville": "NANTES 2025-11-28",
+      "inscrits": 30633,
+      "venus": 22400,
+      "taux": 73.12
+    },
+    {
+      "ville": "MARSEILLE 2026-01-16",
+      "inscrits": 22554,
+      "venus": 15649,
+      "taux": 69.38
+    },
+    {
+      "ville": "PARIS 2025-10-04",
+      "inscrits": 50734,
+      "venus": 24532,
+      "taux": 48.35
+    },
+    {
+      "ville": "PARIS 2025-11-21",
+      "inscrits": 42640,
+      "venus": 28159,
+      "taux": 66.04
+    },
+    {
+      "ville": "CLERMONT-FERRAND 2026-01-15",
+      "inscrits": 17917,
+      "venus": 14386,
+      "taux": 80.29
+    },
+    {
+      "ville": "CAEN 2025-12-12",
+      "inscrits": 16290,
+      "venus": 12678,
+      "taux": 77.83
+    }
+  ],
+  "lead_distribution": {
+    "labels": [
+      "Lead A (chaud)",
+      "Lead B (tiède)",
+      "Lead C (froid)"
+    ],
+    "values": [
+      4639,
+      361,
+      0
+    ]
+  }
+}

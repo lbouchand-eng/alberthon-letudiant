@@ -1,0 +1,155 @@
+{% extends "portal/_layout.html" %}
+{% block title %}Leads scorés — Mon portail{% endblock %}
+
+{% block portal_content %}
+
+<div class="page-head">
+  <div>
+    <h1>🎯 Leads scorés A/B/C</h1>
+    <div class="sub">Uniquement les contacts avec consentement commercial actif. Export CSV inclus.</div>
+  </div>
+  <div>
+    <a href="{{ url_for('portal_leads_export', region=filters.region, level=filters.level, domain=filters.domain, lead_class=filters.lead_class, score_min=filters.score_min) }}"
+       class="btn btn-primary">⬇ Exporter en CSV</a>
+  </div>
+</div>
+
+{% if quota %}
+<div class="card" style="margin-bottom: 16px;">
+  <div class="quota-meta">
+    <span>Consommation cumulée</span>
+    <span><strong>{{ consumed }}</strong> / {{ quota }} leads &middot; reste <strong>{{ quota - consumed }}</strong></span>
+  </div>
+  <div class="quota-bar">
+    <div class="quota-fill {% if quota_pct > 75 %}warning{% endif %}" style="width: {{ quota_pct }}%;"></div>
+  </div>
+</div>
+{% endif %}
+
+<div class="stats-row">
+  <span class="stat-pill"><strong>{{ total }}</strong> leads filtrés</span>
+  <span class="stat-pill a"><strong>{{ counts.get('A', 0) }}</strong> Lead A (chaud)</span>
+  <span class="stat-pill b"><strong>{{ counts.get('B', 0) }}</strong> Lead B (tiède)</span>
+  <span class="stat-pill c"><strong>{{ counts.get('C', 0) }}</strong> Lead C (froid)</span>
+</div>
+
+<form id="filterForm" class="filter-bar" method="get" action="{{ url_for('portal_leads') }}">
+  <div class="filter-field">
+    <label>Classe</label>
+    <select name="lead_class">
+      <option value="all" {% if filters.lead_class == 'all' %}selected{% endif %}>Toutes</option>
+      {% for c in refs.classes %}
+        <option value="{{ c }}" {% if filters.lead_class == c %}selected{% endif %}>{{ c }} — {{ {'A':'chaud','B':'tiède','C':'froid'}[c] }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-field">
+    <label>Niveau scolaire</label>
+    <select name="level">
+      <option value="all" {% if filters.level == 'all' %}selected{% endif %}>Tous</option>
+      {% for l in refs.levels %}
+        <option value="{{ l }}" {% if filters.level == l %}selected{% endif %}>{{ l }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-field">
+    <label>Domaine</label>
+    <select name="domain">
+      <option value="all" {% if filters.domain == 'all' %}selected{% endif %}>Tous</option>
+      {% for d in refs.domains %}
+        <option value="{{ d }}" {% if filters.domain == d %}selected{% endif %}>{{ d }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-field">
+    <label>Région</label>
+    <select name="region">
+      <option value="all" {% if filters.region == 'all' %}selected{% endif %}>Toutes</option>
+      {% for r in refs.regions %}
+        <option value="{{ r }}" {% if filters.region == r %}selected{% endif %}>{{ r }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-field">
+    <label>Score min.</label>
+    <input type="number" name="score_min" min="0" max="100" step="5" value="{{ filters.score_min or 0 }}">
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn btn-outline btn-sm">Appliquer</button>
+    <a href="{{ url_for('portal_leads') }}" id="resetFilters" class="btn btn-ghost btn-sm">Réinitialiser</a>
+  </div>
+</form>
+
+<div class="leads-wrap">
+  {% if rows %}
+  <table class="leads-table">
+    <thead>
+      <tr>
+        <th>ID anonymisé</th>
+        <th>Niveau</th>
+        <th>Domaine</th>
+        <th>Région</th>
+        <th>Profil</th>
+        <th class="num">Score</th>
+        <th>Classe</th>
+        <th class="num">Salons</th>
+        <th class="num">Emails ouv.</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td class="id">#{{ r.id_Inscrit_site }}</td>
+        <td>{{ r.study_level or '—' }}</td>
+        <td title="{{ r.domaine_etude }}">{{ (r.domaine_etude or '—')[:40] }}{% if r.domaine_etude and r.domaine_etude|length > 40 %}…{% endif %}</td>
+        <td>{{ r.Region or '—' }}</td>
+        <td>{{ (r.profile or '—')[:24] }}</td>
+        <td class="num"><strong>{{ r.score_total }}</strong></td>
+        <td><span class="badge badge-{{ r.lead_class|lower }}">{{ r.lead_class }}</span></td>
+        <td class="num">{{ r.nb_salons or 0 }}</td>
+        <td class="num">{{ r.nb_emails_ouverts or 0 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <div>
+      Page <strong>{{ page }}</strong> / {{ pages }} · {{ total }} leads filtrés
+    </div>
+    <div class="pager">
+      {% set qs_base = 'lead_class=' ~ filters.lead_class ~ '&level=' ~ filters.level ~ '&domain=' ~ filters.domain ~ '&region=' ~ filters.region ~ '&score_min=' ~ filters.score_min %}
+      {% if page > 1 %}
+        <a href="?{{ qs_base }}&page=1">«</a>
+        <a href="?{{ qs_base }}&page={{ page - 1 }}">‹</a>
+      {% else %}
+        <span class="disabled">«</span>
+        <span class="disabled">‹</span>
+      {% endif %}
+      <span class="current">{{ page }}</span>
+      {% if page < pages %}
+        <a href="?{{ qs_base }}&page={{ page + 1 }}">›</a>
+        <a href="?{{ qs_base }}&page={{ pages }}">»</a>
+      {% else %}
+        <span class="disabled">›</span>
+        <span class="disabled">»</span>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="leads-empty">
+    <div class="icon">🔍</div>
+    <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--text);">Aucun lead correspondant</h3>
+    <p>Élargissez vos filtres pour afficher davantage de profils.</p>
+    <a href="{{ url_for('portal_leads') }}" class="btn btn-outline btn-sm" style="margin-top: 14px;">Réinitialiser les filtres</a>
+  </div>
+  {% endif %}
+</div>
+
+<div class="alert-info" style="margin-top: 18px;">
+  🔒 <strong>RGPD by design.</strong> Tous les profils ci-dessus disposent d'un consentement commercial actif. L'export CSV exclut les colonnes nominatives (email, téléphone) — uniquement l'ID pseudonymisé est transmis.
+</div>
+
+<script src="{{ url_for('static', filename='js/leads-table.js') }}"></script>
+
+{% endblock %}

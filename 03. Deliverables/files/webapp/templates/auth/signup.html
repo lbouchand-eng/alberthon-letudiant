@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Demander un accès — L'Étudiant Data{% endblock %}
+
+{% block content %}
+<section class="section" style="padding: 56px 0;">
+  <div class="container">
+    <div class="form-card" style="max-width: 540px;">
+      <h1>Créer mon compte</h1>
+      <p class="form-sub">Pour les écoles, BTS, IUT et universités. Validation manuelle sous 24 h ouvrées.</p>
+
+      <form method="post">
+        <div class="form-row">
+          <label for="school_name">Nom de l'établissement *</label>
+          <input id="school_name" name="school_name" type="text" required placeholder="ex. ISEG Paris">
+        </div>
+        <div class="form-row">
+          <label for="email">Email professionnel *</label>
+          <input id="email" name="email" type="email" required>
+          <div class="help">Idéalement avec votre nom de domaine (.fr / .edu).</div>
+        </div>
+        <div class="form-row">
+          <label for="password">Mot de passe *</label>
+          <input id="password" name="password" type="password" required minlength="8">
+          <div class="help">Au moins 8 caractères.</div>
+        </div>
+        <div class="form-row">
+          <label for="plan">Plan envisagé</label>
+          <select id="plan" name="plan">
+            <option value="starter">Baromètre Starter — 6 000 €/an</option>
+            <option value="growth">Baromètre Growth — 14 000 €/an</option>
+            <option value="premium">Baromètre Premium — 28 000 €/an</option>
+            <option value="leads_only">Leads CPL uniquement</option>
+            <option value="premium_leads">Premium + Leads (sur devis)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Demander un accès</button>
+        <p style="font-size: 0.78rem; color: var(--muted); margin-top: 14px; text-align: center;">
+          En soumettant, vous acceptez nos CGU et notre politique RGPD.
+        </p>
+      </form>
+
+      <p style="font-size: 0.88rem; color: var(--muted); margin-top: 18px; text-align: center;">
+        Déjà un compte ? <a href="{{ url_for('login') }}">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

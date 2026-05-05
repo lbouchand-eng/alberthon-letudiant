@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}À propos — L'Étudiant Data{% endblock %}
+
+{% block content %}
+
+<section class="hero" style="padding: 60px 24px 80px;">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-eyebrow">Notre mission</span>
+      <h1>L'orientation, pilotée par la donnée.</h1>
+      <p class="lead">Depuis 50 ans, L'Étudiant accompagne les jeunes dans leurs choix d'orientation. Avec L'Étudiant Data, nous mettons cette intelligence collective au service des écoles, BTS, IUT et universités.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="card-grid two" style="grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: start;">
+      <div>
+        <h2 style="font-size: 1.7rem; font-weight: 800; margin-bottom: 16px;">Une plateforme construite avec Alberthon</h2>
+        <p style="color: var(--text-soft); font-size: 1rem; margin-bottom: 14px;">
+          L'Étudiant Data est née de la collaboration entre les équipes data de L'Étudiant et les data scientists d'Alberthon, l'école de la data appliquée. Notre conviction : les écoles méritent les mêmes outils d'intelligence d'audience que les pure-players du e-commerce.
+        </p>
+        <p style="color: var(--text-soft); font-size: 1rem;">
+          Le pipeline qui alimente notre plateforme combine 5 sources BigQuery — profil étudiant, agent conversationnel d'orientation, événements CRM, présences salons, dimensions filière — pour produire un score d'intention robuste et auditable.
+        </p>
+
+        <h3 style="font-size: 1.2rem; font-weight: 800; margin: 28px 0 12px;">Notre engagement RGPD</h3>
+        <ul style="list-style: none; color: var(--text-soft);">
+          <li style="padding: 6px 0 6px 24px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Base légale : intérêt légitime (Art. 6.1.f) pour le scoring interne</li>
+          <li style="padding: 6px 0 6px 24px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Transmission uniquement avec consentement explicite</li>
+          <li style="padding: 6px 0 6px 24px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Pseudonymisation des emails et téléphones (BYTES)</li>
+          <li style="padding: 6px 0 6px 24px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> Filtrage automatique des moins de 15 ans</li>
+          <li style="padding: 6px 0 6px 24px; position: relative;"><span style="position:absolute; left:0; color: var(--success); font-weight:800;">✓</span> AIPD réalisée et tenue à disposition</li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding: 32px; background: var(--bg);">
+        <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 18px;">Quelques chiffres</h3>
+        <div style="display: grid; gap: 18px;">
+          <div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--primary);">4 058 555</div>
+            <div style="font-size: 0.85rem; color: var(--muted);">inscrits actifs sur la base CRM</div>
+          </div>
+          <div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--primary);">250 M+</div>
+            <div style="font-size: 0.85rem; color: var(--muted);">événements CRM analysés</div>
+          </div>
+          <div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--primary);">3,5 M</div>
+            <div style="font-size: 0.85rem; color: var(--muted);">présences salons enregistrées</div>
+          </div>
+          <div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--primary);">56 605</div>
+            <div style="font-size: 0.85rem; color: var(--muted);">conversations agent IA orientation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-grey">
+  <div class="container">
+    <div class="section-title">
+      <small>L'équipe</small>
+      <h2>Une équipe data, produit et conformité</h2>
+    </div>
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <p class="quote">Direction produit — fusion Baromètre &amp; Marketing automation pour livrer un parcours commercial unifié aux écoles.</p>
+        <div class="author">
+          <div class="avatar">LB</div>
+          <div>
+            <div class="author-name">Léonard Bouchand</div>
+            <div class="author-role">Lead Product · Alberthon</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="quote">Pipeline BigQuery, scoring 3 dimensions, automatisation du flux CSV vers les écoles partenaires.</p>
+        <div class="author">
+          <div class="avatar">DE</div>
+          <div>
+            <div class="author-name">Data Engineering</div>
+            <div class="author-role">Équipe L'Étudiant Data</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="quote">DPA, AIPD, gestion du consentement et de la rétention. Conformité RGPD by design, et pas seulement by paperwork.</p>
+        <div class="author">
+          <div class="avatar">DPO</div>
+          <div>
+            <div class="author-name">Pôle Conformité</div>
+            <div class="author-role">DPO L'Étudiant</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

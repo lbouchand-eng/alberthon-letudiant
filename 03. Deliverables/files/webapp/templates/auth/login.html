@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Connexion — L'Étudiant Data{% endblock %}
+
+{% block content %}
+<section class="section" style="padding: 56px 0;">
+  <div class="container">
+    <div class="form-card">
+      <h1>Bon retour 👋</h1>
+      <p class="form-sub">Connectez-vous à votre portail entreprise.</p>
+
+      <form method="post">
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autofocus>
+        </div>
+        <div class="form-row">
+          <label for="password">Mot de passe</label>
+          <input id="password" name="password" type="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Se connecter</button>
+      </form>
+
+      <p style="font-size: 0.88rem; color: var(--muted); margin-top: 18px; text-align: center;">
+        Pas encore de compte ? <a href="{{ url_for('signup') }}">Demander un accès</a>
+      </p>
+
+      <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--muted);">
+        <strong style="color: var(--text);">🧪 Comptes de démo</strong><br>
+        admin@letudiant.fr · client@iseg.fr · bts@lyceefoch.fr · leads@em-lyon.fr<br>
+        Mot de passe pour tous : <code style="background: var(--bg); padding: 2px 6px; border-radius: 4px;">demo2026</code>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
